@@ -1,9 +1,8 @@
 # Find My Phone Telegram BOT
-
 This project is a Telegram bot to access location data stored in Dropbox as GeoJSON files from GPSLogger app. The bot allows users to query the latest location information for different individuals.
 
 ## Features
-
+![bot-server.py flowchart](find-my-phone-telegram-bot.png)
 - Retrieves location information from GeoJSON files in Dropbox.
 - Sends the last recorded location to Telegram, including details such as:
   - Latitude and Longitude
