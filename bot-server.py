@@ -3,27 +3,31 @@ import dropbox
 import geojson
 import telebot
 import re
+import os
+from dotenv import load_dotenv
 
-##Dropbox config##
-DROPBOX_APPKEY = ''
-DROPBOX_APPSECRET = ''
-DROPBOX_REFRESH_TOKEN = ''
-GEOJSON_PERSON_A_PATH = '/Aplicativos/GPSLogger for Android/file_YYYY-MM-DD.geojson'
-GEOJSON_PERSON_B_PATH = ''
-GEOJSON_PERSON_C_PATH = ''
+load_dotenv(override=True)
 
-##Telegram config##
-TELEGRAM_API = ''
-CHAT_ID = ''
+##Dropbox Config##
+DROPBOX_APPKEY = os.getenv("DROPBOX_APPKEY")
+DROPBOX_APPSECRET = os.getenv("DROPBOX_APPSECRET")
+DROPBOX_REFRESH_TOKEN = os.getenv("DROPBOX_REFRESH_TOKEN")
 
-##BOT config##
+## Carrega pessoas dinamicamente do arquivo .env ##
+PEOPLE = {
+    key.replace("GEOJSON_PATH_PERSON_", "").capitalize(): os.getenv(key)
+    for key in os.environ if key.startswith("GEOJSON_PATH_PERSON_")
+}
+
+print(PEOPLE)
+##Telegram Config##
+TELEGRAM_API = os.getenv("TELEGRAM_API")
+CHAT_ID = os.getenv("CHAT_ID")
+
+##BOT Config##
 FORMAT_TIME = '%d/%m/%Y %H:%M'
-DEFAULT_MENU_TEXT = """Hi, I'm a GPSLogger Bot!
-Click on an option to continue:
-/getPersonA location
-/getPersonB location
-/getPersonC location
-"""
+DEFAULT_MENU_TEXT = "Hi, I'm a GPSLogger Bot!\nClick on an option to continue:\n" + \
+    "\n".join([f"/get_person_{person.capitalize()}_location" for person in PEOPLE.keys()])
 
 bot = telebot.TeleBot(TELEGRAM_API)
 
@@ -51,6 +55,7 @@ def get_last_feature(geojson_data):
         return None
 
 def init_dropbox(geojon_file_path):
+    latitude = longitude = accuracy = altitude = time = None
     geojson_data = get_geojson_from_dropbox(geojon_file_path)
 
     if geojson_data:
@@ -69,22 +74,21 @@ def getLOG(geojon_file_path):
     new_filename = re.sub(r'\d{4}-\d{2}-\d{2}', current_date, geojon_file_path)
 
     lat, lon, acc, alt, time = init_dropbox(new_filename)
+    if lat is None or lon is None:
+        bot.send_message(chat_id=CHAT_ID, text="Location data is unavailable.")
+        return
+    
     description = f"""Location {lat},{lon}
 Last seen {time} | Altitude {alt} | Accuracy {acc}"""
     bot.send_location(chat_id=CHAT_ID,latitude=lat,longitude=lon)
     bot.send_message(chat_id=CHAT_ID,text=description)
 
-@bot.message_handler(commands=["getPersonA"])
-def getLOG_1(message):
-    getLOG(GEOJSON_PERSON_A_PATH)
-
-@bot.message_handler(commands=["getPersonB"])
-def getLOG_2(message):
-    bot.send_message(chat_id=CHAT_ID,text="Not setup yet")
-
-@bot.message_handler(commands=["getPersonC"])
-def getLOG_3(message):
-    bot.send_message(chat_id=CHAT_ID,text="Not setup yet")
+@bot.message_handler(commands=[f"get_person_{person.capitalize()}_location" for person in PEOPLE.keys()])
+def handle_location_request(message):
+    full_command = message.text
+    command_parts = full_command[1:].split('_')
+    entity = command_parts[2].capitalize()
+    getLOG(PEOPLE[entity])
 
 def verify_msg(message):
     return True
