@@ -28,7 +28,7 @@ NAMES = [value.split('/')[-1].split('_')[0] for value in PEOPLE.values()]
 FORMAT_TIME = '%d/%m/%Y %H:%M'
 DEFAULT_MENU_TEXT = "Hi, I'm a GPSLogger Bot!\nClick on an option to continue:\n" + \
     "\n".join([f"/get_{name}_location" for name in NAMES])
-print(PEOPLE)
+
 bot = telebot.TeleBot(TELEGRAM_API)
 
 def get_geojson_from_dropbox(file_path):
@@ -87,9 +87,7 @@ Last seen {time} | Altitude {alt} | Accuracy {acc}"""
 def handle_location_request(message):
     full_command = message.text
     command_parts = full_command[1:].split('_')
-    print(command_parts)
     entity = command_parts[1]
-    print(entity)
     getkey = next(key for key, name in PEOPLE.items() if entity in name)
     getLOG(PEOPLE[getkey])
 
