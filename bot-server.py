@@ -19,16 +19,16 @@ PEOPLE = {
     for key in os.environ if key.startswith("GEOJSON_PATH_PERSON_")
 }
 
-print(PEOPLE)
 ##Telegram Config##
 TELEGRAM_API = os.getenv("TELEGRAM_API")
 CHAT_ID = os.getenv("CHAT_ID")
 
 ##BOT Config##
+NAMES = [value.split('/')[-1].split('_')[0] for value in PEOPLE.values()]
 FORMAT_TIME = '%d/%m/%Y %H:%M'
 DEFAULT_MENU_TEXT = "Hi, I'm a GPSLogger Bot!\nClick on an option to continue:\n" + \
-    "\n".join([f"/get_person_{person.capitalize()}_location" for person in PEOPLE.keys()])
-
+    "\n".join([f"/get_{name}_location" for name in NAMES])
+print(PEOPLE)
 bot = telebot.TeleBot(TELEGRAM_API)
 
 def get_geojson_from_dropbox(file_path):
@@ -83,12 +83,15 @@ Last seen {time} | Altitude {alt} | Accuracy {acc}"""
     bot.send_location(chat_id=CHAT_ID,latitude=lat,longitude=lon)
     bot.send_message(chat_id=CHAT_ID,text=description)
 
-@bot.message_handler(commands=[f"get_person_{person.capitalize()}_location" for person in PEOPLE.keys()])
+@bot.message_handler(commands=[f"get_{name}_location" for name in NAMES])
 def handle_location_request(message):
     full_command = message.text
     command_parts = full_command[1:].split('_')
-    entity = command_parts[2].capitalize()
-    getLOG(PEOPLE[entity])
+    print(command_parts)
+    entity = command_parts[1]
+    print(entity)
+    getkey = next(key for key, name in PEOPLE.items() if entity in name)
+    getLOG(PEOPLE[getkey])
 
 def verify_msg(message):
     return True
