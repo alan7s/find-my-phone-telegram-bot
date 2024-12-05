@@ -15,12 +15,12 @@ This project is a Telegram bot to access location data stored in Dropbox as GeoJ
 
 ### Prerequisites
 
-- [Dropbox](https://www.dropbox.com/developers/reference/getting-started#app%20console): create an account and set up an app.
-- [GPSLogger](https://github.com/mendhak/gpslogger/releases): install the app and set up on the target device.
+- [Dropbox](https://www.dropbox.com/developers/reference/getting-started#app%20console): create an account and setup your own app.
+- [GPSLogger](https://github.com/mendhak/gpslogger/releases): install the app and setup on the target device.
   - Save logs in GeoJSON format.
-  - Use a customizable name in the format: file_YYYY-MM-DD.geojson (the word "file" can be anything).
+  - Use a customizable name in the format: personName_YYYY-MM-DD.geojson
   - Save the time with time zone offset.
-  - Enable automatic upload to Dropbox.
+  - Enable and setup automatic upload to Dropbox.
 - [Telegram bot](https://core.telegram.org/bots/tutorial#obtain-your-bot-token): configure and obtain the token.
 
 ### Installation
@@ -34,19 +34,18 @@ This project is a Telegram bot to access location data stored in Dropbox as GeoJ
    ```bash
    pip install dropbox geojson telebot python-dotenv
 
-3. Configure the variables in the code:
+3. Configure the variables in the .env file:
 - Dropbox:
   - DROPBOX_APPKEY: Dropbox app key.
   - DROPBOX_APPSECRET: Dropbox app secret.
   - DROPBOX_REFRESH_TOKEN: OAuth2 [refresh token](https://www.limontec.com/2024/08/dropbox-como-obter-refresh-token.html).
+  - Paths to the GeoJSON files in Dropbox:
+    - GEOJSON_PATH_PERSON_A
+    - GEOJSON_PATH_PERSON_B
+    - GEOJSON_PATH_PERSON_C
 - Telegram:
   - TELEGRAM_API: Telegram bot token.
   - CHAT_ID: Chat ID where messages will be sent.
-- GeoJSON Paths:
-  - Paths to the GeoJSON files in Dropbox:
-    - GEOJSON_PERSON_A_PATH
-    - GEOJSON_PERSON_B_PATH
-    - GEOJSON_PERSON_C_PATH
 
 4. Start the bot:
    ```bash
