@@ -32,7 +32,7 @@ This project is a Telegram bot to access location data stored in Dropbox as GeoJ
 
 2. Install dependencies:
    ```bash
-   pip install dropbox geojson telebot
+   pip install dropbox geojson telebot python-dotenv
 
 3. Configure the variables in the code:
 - Dropbox:
@@ -55,9 +55,7 @@ This project is a Telegram bot to access location data stored in Dropbox as GeoJ
 ## Usage
 
 ### Available Commands
-  - /getPersonA: Retrieves the last recorded location for Person A.
-  - /getPersonB: (Pending configuration).
-  - /getPersonC: (Pending configuration).
+  - /get_personName_location: Retrieves the last recorded location for a person.
 
 ### Default Response
 The bot displays the menu with available options if the sent command is not recognized.
