@@ -101,7 +101,8 @@ def default_response(message):
 
 def main():
     print("Bot server running...")
-    bot.polling()
+    bot.infinity_polling(timeout=10, long_polling_timeout=5)
+    #bot.polling()
 
 if __name__ == "__main__":
     main()
