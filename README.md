@@ -68,7 +68,7 @@ The bot displays the menu with available options if the sent command is not reco
    ```bash
    ps ax | grep bot-server.py
    
-3. Killing the process:
+3. To stop the bot-server, kill the process:
    ```bash
    kill PID
 
