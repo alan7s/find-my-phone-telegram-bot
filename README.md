@@ -32,7 +32,7 @@ This project is a Telegram bot to access location data stored in Dropbox as GeoJ
 
 2. Install dependencies:
    ```bash
-   pip install dropbox geojson telebot python-dotenv
+   pip install -r requirements.txt
 
 3. Configure the variables in the .env file:
 - Dropbox:
@@ -49,7 +49,7 @@ This project is a Telegram bot to access location data stored in Dropbox as GeoJ
 
 4. Start the bot:
    ```bash
-   python bot-server.py
+   python3 bot-server.py
 
 ## Usage
 
@@ -58,6 +58,19 @@ This project is a Telegram bot to access location data stored in Dropbox as GeoJ
 
 ### Default Response
 The bot displays the menu with available options if the sent command is not recognized.
+
+## Running in background
+1. To start the bot-server:
+   ```bash
+   nohup python3 -u bot-server.py > output.log &
+
+2. Finding the process ID:
+   ```bash
+   ps ax | grep bot-server.py
+   
+3. Killing the process:
+   ```bash
+   kill PID
 
 ## Contribution
 Contributions are welcome! Feel free to open issues or submit pull requests.
