@@ -17,10 +17,28 @@ This project is a Telegram bot to access location data stored in Dropbox as GeoJ
 
 - [Dropbox](https://www.dropbox.com/developers/reference/getting-started#app%20console): create an account and setup your own app.
 - [GPSLogger](https://github.com/mendhak/gpslogger/releases): install the app and setup on the target device.
-  - Save logs in GeoJSON format.
-  - Use a customizable name in the format: personName_YYYY-MM-DD.geojson
-  - Save the time with time zone offset.
-  - Enable and setup automatic upload to Dropbox.
+  - General Options:
+    - Start on bootup
+    - Start on app launch
+    - Hide notification buttons
+    - Hide notification from lock screen
+  - Logging details:
+    - Log to GeoJSON format.
+    - Custom file name: personName_%YEAR-%MONTH-%DAY.geojson
+    - Allow custom file name to change dynamic.
+    - Log time with time zone offset.
+    - Enable and setup automatic upload to Dropbox.
+  - Performance:
+    - Log GPS/GNSS locations
+    - Log network locations
+    - Logging interval: 300 s
+  - Upload settings:
+    - Allow auto sending
+    - How often? 5 min
+    - When I press stop
+    - Dropbox:
+      - Allow auto sending
+      - Setup authorization
 - [Telegram bot](https://core.telegram.org/bots/tutorial#obtain-your-bot-token): configure and obtain the token.
 
 ### Installation
